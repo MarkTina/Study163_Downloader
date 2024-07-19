@@ -6,7 +6,6 @@
 ```pip install -r requirements.txt```
 ## 2.2 获取 COOKIES 中的 STUDY_SESS 参数
 ![img.png](images/img.png)
-![img_1.png](images/img_1.png)
 
 # 3. 配置下载对象 和 运行
 ## 3.1 获取课程id
@@ -16,8 +15,4 @@
 
 # 4. 其它
 如果能帮到你，请 3 只小猫吃个罐头吧
-![img_6.png](images/img_6.png)
-![img_4.png](images/img_4.png)
-![img_5.png](images/img_5.png)
-
-![img_7.png](images/img_7.png)
+![img_1.png](images/img_1.png)
