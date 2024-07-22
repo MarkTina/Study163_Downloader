@@ -1,3 +1,5 @@
+import concurrent.futures
+
 import requests
 import m3u8
 from Crypto.Util.Padding import pad
@@ -29,6 +31,17 @@ def no_decrypt_segment(segment: m3u8.Segment):
     return response.content
 
 
+def download_one(ts_info: tuple):
+    index, seg, key, iv = ts_info
+    if key:
+        decrypted_data = decrypt_segment(seg, key, iv)
+        segment_data = decrypted_data
+    else:
+        segment_data = no_decrypt_segment(seg)
+    # print('完成：', index)
+    return index, segment_data
+
+
 def download_m3u8_video(url, save_name):
     # 构造 m3u8 对象
     m3u8_obj = m3u8.load(url, headers=HEADERS)
@@ -42,11 +55,18 @@ def download_m3u8_video(url, save_name):
         key_uri = m3u8_obj.keys[-1].uri
         key = download_key(key_uri)
         iv = key[:16]
-    with open(f'{save_name}.mp4', "wb") as f:
-        for seg in tqdm.tqdm(segments, desc=save_name):
-            if m3u8_obj.keys:
-                decrypted_data = decrypt_segment(seg, key, iv)
-                segment_data = decrypted_data
-            else:
-                segment_data = no_decrypt_segment(seg)
-            f.write(segment_data)
+
+    # 加上索引进行多线程下载
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        tasks = [(index, seg, key, iv) for index, seg in enumerate(segments)]
+        res = executor.map(download_one, tasks)
+
+    # 根据 index 把结果进行排序
+    res = list(res)
+    res.sort(key=lambda item: item[0])
+
+    with open(f'{save_name}.ts', "wb") as f:
+        for ts in res:
+            f.write(ts[1])
+
+    print(f'完成下载：{save_name}.ts')

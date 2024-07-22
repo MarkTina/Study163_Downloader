@@ -170,14 +170,14 @@ class Downloader:
 
 
 if __name__ == '__main__':
-    COOKIES = 'STUDY_SESS="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"; '
-    d = Downloader(COOKIES, course_id='11111111', save_dir_name='output')
-    d.download_all_lessons()  # 测试 全量下载
+    COOKIES = 'STUDY_SESS="f8UHJzvzV0ZLT3KWEJIUtgPRFumbIYQjhFZXD0YE5oi/F+sUwPqH7DeN3Ll+tPaef3yGmezz1jIg5BmgRMyS2CY0UawzbAGpbDS5tKlgrZ+0F+ExsgVs6hvoS1avPvGWCxALxo8wNHftqmxCGx4G52xfxNLia6E4X+R3124aKEcAFhqsm7+DHVfJhiFOprz2"; '
+    d = Downloader(COOKIES, course_id='1212778803', save_dir_name='output')
+    # d.download_all_lessons()  # 测试 全量下载
 
     # d.get_signature(1284992329)             # 测试 获取 signature
     # d.get_video_info(1284992329)            # 测试 获取 视频信息 和 加密后的 k
     # m3u = d.get_m3u8_url(1284992329)        # 测试 获取 视频的真实 M3U8 地址
-    # tl = d.get_lessons_list()               # 测试 获取 课程的所有 lesson 信息
-    # d.download_one_lesson(tl[80])           # 测试 单个下载
+    tl = d.get_lessons_list()               # 测试 获取 课程的所有 lesson 信息
+    d.download_one_lesson(tl[80])           # 测试 单个下载
 
 
