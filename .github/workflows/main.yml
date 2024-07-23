@@ -1,0 +1,17 @@
+on:
+  workflow_dispatch:
+  push:
+  
+jobs:
+  pyinstaller-build:
+    runs-on: windows-latest
+    steps:
+      - name: 执行打包操作
+        uses: sayyid5416/pyinstaller@v1
+        with:
+          python_ver: '3.10'
+          pyinstaller_ver: '==5.13.2'
+          spec: 'study163_downloader.py'
+          requirements: 'requirements.txt'
+          upload_exe_with_name: '网易云课堂视频下载器'
+          options: --onefile, --name "网易云课堂视频下载器", --windowed, 
