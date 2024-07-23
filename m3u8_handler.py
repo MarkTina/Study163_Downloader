@@ -65,7 +65,7 @@ def download_m3u8_video(url, save_name):
     res = list(res)
     res.sort(key=lambda item: item[0])
 
-    with open(f'{save_name}.ts', "wb") as f:
+    with open(f'{save_name}.ts', "wb", encoding='utf-8') as f:
         for ts in res:
             f.write(ts[1])
 
