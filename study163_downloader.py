@@ -9,6 +9,7 @@ from urllib.parse import quote
 import requests
 
 from m3u8_handler import download_m3u8_video
+from read_config import get_ini_config
 
 
 KEY = b'3fp4xs922ouw5q72'
@@ -169,10 +170,19 @@ class Downloader:
             executor.map(self.download_one_lesson, task_list)
 
 
+def main():
+    ini_info = get_ini_config()
+    cookies = f'STUDY_SESS="{ini_info["study_sess"]}"; '
+    course_id = ini_info["course_id"]
+    course_name = ini_info["course_name"]
+    downloader = Downloader(cookies, course_id, course_name)
+    downloader.download_all_lessons()
+
+
 if __name__ == '__main__':
-    COOKIES = 'STUDY_SESS="XXXXXXXXXXX"; '
-    d = Downloader(COOKIES, course_id='1212778803', save_dir_name='output')
-    d.download_all_lessons()  # 测试 全量下载
+    # COOKIES = ''
+    # d = Downloader(COOKIES, course_id='1212778803', save_dir_name='output')
+    # d.download_all_lessons()  # 测试 全量下载
 
     # d.get_signature(1284992329)             # 测试 获取 signature
     # d.get_video_info(1284992329)            # 测试 获取 视频信息 和 加密后的 k
@@ -180,4 +190,4 @@ if __name__ == '__main__':
     # tl = d.get_lessons_list()               # 测试 获取 课程的所有 lesson 信息
     # d.download_one_lesson(tl[80])           # 测试 单个下载
 
-
+    main()
