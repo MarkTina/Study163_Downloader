@@ -14,4 +14,4 @@ jobs:
           spec: 'study163_downloader.py'
           requirements: 'requirements.txt'
           upload_exe_with_name: 'study163_downloader'
-          options: --onefile, --name "study163_downloader", --windowed,
+          options: --onefile, --name "study163_downloader", --console,
