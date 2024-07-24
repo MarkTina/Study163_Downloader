@@ -7,6 +7,7 @@ import base64
 from urllib.parse import quote
 
 import requests
+from retrying import retry
 
 from m3u8_handler import download_m3u8_video
 from read_config import get_ini_config
@@ -119,14 +120,10 @@ class Downloader:
         }
         response = requests.request("POST", url, headers=headers, data=payload)
         res = response.text
-        # print(res)
-        try:
-            signature = re.findall('signature="(.+?)"', res)[0]
-            video_id = re.findall('videoId=(.+?);', res)[0]
-            # print(f'video: {video_id}\nsignature: {signature}')
-            return signature, video_id
-        except BaseException as e:
-            print(f'error:{e}\n可能是 cookie 过期')
+        signature = re.findall('signature="(.+?)"', res)[0]
+        video_id = re.findall('videoId=(.+?);', res)[0]
+        # print(f'video: {video_id}\nsignature: {signature}')
+        return signature, video_id
 
     def get_video_info(self, lesson_id: str | int):
         """获取视频信息，用来构造下载地址"""
@@ -153,6 +150,10 @@ class Downloader:
         # 返回构造完毕的 m3u8_url
         return m3u8_url
 
+    @retry(
+        stop_max_attempt_number=3,
+        wait_fixed=3000,
+    )
     def download_one_lesson(self, lesson_info: dict):
         # 下载单个课程的方法
         lesson_id = lesson_info['lesson_id']
