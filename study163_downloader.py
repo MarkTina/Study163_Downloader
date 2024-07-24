@@ -119,6 +119,7 @@ class Downloader:
         }
         response = requests.request("POST", url, headers=headers, data=payload)
         res = response.text
+        # print(res)
         try:
             signature = re.findall('signature="(.+?)"', res)[0]
             video_id = re.findall('videoId=(.+?);', res)[0]
@@ -175,7 +176,7 @@ def main():
     course_id = ini_info["course_id"]
     save_name = ini_info["save_name"]
     study_sess = ini_info["study_sess"]
-    cookies = f'STUDY_SESS="{ini_info["study_sess"]}"; '
+    cookies = f'STUDY_SESS="{ini_info["study_sess"]}";'
     if not all([course_id, save_name, study_sess]):
         input('参数不能为空，请检查 config.ini 文件的参数是有空值')
         return
